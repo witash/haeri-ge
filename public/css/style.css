@@ -1,0 +1,99 @@
+.thermometer-back{
+	width:400px;
+	position:relative;
+}
+
+.lowbar{
+	color:#349934;
+	width:234px;
+}
+
+.midbar{
+	color:#999934;
+	width:234px;
+}
+
+.highbar{
+	color:#993434;
+	width:400px;
+}
+
+.grapher{
+	position:absolute;
+	left:0;
+}
+
+.data-bar{
+	background-color:#999999;
+}
+#map{
+	margin-left:auto;
+	margin-right:auto;
+	width:100%;
+    height: 450px;
+    z-index:-1;
+}
+
+#map-container{
+	position:relative;	
+}
+
+#hover-div{
+	position:absolute;
+	z-index:1000;
+	
+	opacity:0.9;
+	
+	padding:20px;
+	
+	background: #FFFFFF;
+	border: 1px solid #999999;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF),
+		to(#DDDDDD));
+	background: -webkit-linear-gradient(top, #FFFFFF, #DDDDDD);
+	background: -moz-linear-gradient(top, #FFFFFF, #DDDDDD);
+	background: -ms-linear-gradient(top, #FFFFFF, #DDDDDD);
+	background: -o-linear-gradient(top, #FFFFFF, #DDDDDD);
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
+	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
+	box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
+}
+
+.olControlAttribution{
+    display: none;
+}
+
+#OpenLayers_Control_Zoom_5 a {
+    text-decoration: none;
+}
+
+.olControlZoomIn.olButton, .olControlZoomOut.olButton {
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,0.9);
+    margin-left: 5px;
+
+    display: block;
+    line-height: 20px;
+    text-align: center;
+    color: rgba(155,160,165,1);
+    text-decoration: none;
+}
+
+.olControlZoomIn.olButton {
+    margin-top: 5px;
+    -webkit-box-shadow:  0px 0px 2px 1px rgba(00, 00, 00, 0.2);
+    box-shadow:  0px 0px 2px 1px rgba(00, 00, 00, 0.2);
+}
+
+.olControlZoomOut.olButton {
+    -webkit-box-shadow:  	0px 1px 2px 1px rgba(00, 00, 00, 0.2);
+    box-shadow:  			0px 1px 2px 1px rgba(00, 00, 00, 0.2);
+}
+
+.hidden{
+	display:none;
+}
