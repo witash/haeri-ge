@@ -11,12 +11,46 @@ $(function(){
 	var size = new OpenLayers.Size(32,32);
 	var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
 
-	var coMax = 25000;
-	var noMax = 1000;
+	var maxima = {
+		co:{
+			eu:{
+				mgm3:10
+			},
+			geo:{
+				mgm3:3
+			},
+			graph:{
+				ppb:25000,
+				mgm3:30.0
+			}
+		},
+		no2:{
+			eu:{
+				mgm3:0.2
+			},
+			geo:{
+				mgm3:0.085
+			},
+			graph:{
+				ppb:1000,
+				mgm3:1.0
+			}
+		}
+	}
+	
+	var curUnits = 'mgm3';
+	
+	$('#units-mgm3').on('click', function(){
+		curUnits = 'mgm3';
+	});
+	
+	$('#units-ppb').on('click', function(){
+		curUnits = 'ppb';
+	});
 	
 	function mouseOverEvent(event){
-		coLabel.html('CO: '+this.eggData.co.mgm3.toFixed(2) + ' mg/m3');
-		no2Label.html('NO2: '+this.eggData.no2.mgm3.toFixed(3) + ' mg/m3');
+		coLabel.html('CO: '+this.eggData.co[curUnits].toFixed(2) + ' ' +'mg/m3');
+		no2Label.html('NO2: '+this.eggData.no2[curUnits].toFixed(3) + ' '+'mg/m3');
 
 		titleLabel.html(this.eggData.title);
 		hoverDiv.removeClass('hidden');
@@ -25,30 +59,71 @@ $(function(){
 			left:event.clientX
 		});
 
-		var graphWidth = (this.eggData.co.ppb / coMax) * 100;
-		coGrapher.progressbar({value: graphWidth});
-		$("#co-grapher > div").css({ 'background': '#'+this.eggData.graphColor});
-		var graphWidth = (this.eggData.no2.ppb / noMax) * 100;
-		no2Grapher.progressbar({value: graphWidth});
-		$("#no2-grapher > div").css({ 'background': '#'+this.eggData.graphColor});
+		coGrapher.tombar({
+			max:maxima.co.graph.mgm3,
+			value: this.eggData.co.mgm3,
+			graphClass:this.eggData.graphClassCO,
+			labels:[{
+				title:'geo',
+				color:'#3476AA',
+				value:5.0
+			},{
+				title:'eu',
+				color:'#96ACEE',
+				value:10.0
+			}]
+		});
+		no2Grapher.tombar({
+			max:maxima.no2.graph.mgm3,
+			value: this.eggData.no2.mgm3,
+			graphClass:this.eggData.graphClassNO2,
+			labels:[{
+				title:'geo',
+				color:'#3476AA',
+				value:0.085
+			},{
+				title:'eu',
+				color:'#96ACEE',
+				value:0.2
+			}]
+		});
 		
 	}
 
 	function addEgg(eggInfo){
-		var iconLow = new OpenLayers.Icon('img/green-leaf-cloud.png', size, offset);
-		var iconMid = new OpenLayers.Icon('img/yellow-leaf-cloud.png', size, offset);
-		var iconHigh = new OpenLayers.Icon('img/red-leaf-cloud.png', size, offset);
+		var iconLow = new OpenLayers.Icon('img/leaf.png', size, offset);
+		var iconMid = new OpenLayers.Icon('img/leaf.yellow.chunked.png', size, offset);
+		var iconHigh = new OpenLayers.Icon('img/leaf.red.chunked.png', size, offset);
 
 		var icon = iconLow;
-		if(eggInfo.no2.ppb < 200){
-			icon = iconLow;
-			eggInfo.graphColor = '55CC55';
-		}else if(eggInfo.no2.ppb < 400){
-			icon = iconMid;
-			eggInfo.graphColor = 'CCCC55';
+		if(eggInfo.no2.mgm3 < maxima.no2.geo.mgm3){
+			eggInfo.graphClassNO2 = 'low';
+			eggInfo.graphColorNO2 = '#55CC55';
+		}else if(eggInfo.no2.mgm3 < maxima.no2.eu.mgm3){
+			eggInfo.graphClassNO2 = 'mid';
+			eggInfo.graphColorNO2 = '#CCCC55';
 		}else{
+			eggInfo.graphClassNO2 = 'high';
+			eggInfo.graphColorNO2 = '#CC5555';
+		}
+		
+		if(eggInfo.co.mgm3 < maxima.co.geo.mgm3){
+			eggInfo.graphClassCO = 'low';
+			eggInfo.graphColorCO = '#55CC55';
+		}else if(eggInfo.co.mgm3 < maxima.co.eu.mgm3){
+			eggInfo.graphClassCO = 'mid';
+			eggInfo.graphColorCO = '#CCCC55';
+		}else{
+			eggInfo.graphClassCO = 'high';
+			eggInfo.graphColorCO = '#CC5555';
+		}
+		
+		if(eggInfo.graphClassCO === 'high' || eggInfo.graphClassNO2 === 'high'){
 			icon = iconHigh;
-			eggInfo.graphColor = 'CC5555';
+		}else if(eggInfo.graphClassCO === 'mid' || eggInfo.graphClassNO2 === 'mid'){
+			icon = iconMid;
+		}else{
+			icon = iconLow;
 		}
 
 		var location = new OpenLayers.LonLat(eggInfo.lon, eggInfo.lat);
@@ -67,7 +142,7 @@ $(function(){
 
 	function isToday(at){
 		var today = new Date();
-		return at.getMonth() !== today.getMonth() || at.getDate() !== today.getDate();
+		return (at.getMonth() == today.getMonth() && at.getDate() >= today.getDate() - 7);
 	}
 
 	function getEggInfo(rawEggData){
@@ -84,15 +159,17 @@ $(function(){
 				if(!isToday(new Date(datastream.at))){
 					continue;
 				}
+				console.log(new Date(datastream.at));
 				eggInfo.co = {};
-				eggInfo.co.ppb = datastream.current_value;
+				eggInfo.co.ppb = new Number(datastream.current_value);
 				eggInfo.co.mgm3 = eggInfo.co.ppb * 28.0 * (1.0/24.0) / 1000.0;
 			}else if(valType === 'NO2_0'){
 				if(!isToday(new Date(datastream.at))){
 					continue;
 				}
+				console.log(new Date(datastream.at));
 				eggInfo.no2 = {};
-				eggInfo.no2.ppb = datastream.current_value;
+				eggInfo.no2.ppb = new Number(datastream.current_value);
 				eggInfo.no2.mgm3 =  eggInfo.no2.ppb * 46.0 * (1.0/24.0) / 1000.0;
 			}
 		}
@@ -144,12 +221,6 @@ $(function(){
 
 	MapContainer.map.addControl(navigation);
 
-	var nc = MapContainer.map.getControlsByClass('OpenLayers.Control.Navigation'),i;
-
-	for( i = 0; i < nc.length; i++ ){
-		nc[i].disableZoomWheel();
-	}
-
 	var gmap = new OpenLayers.Layer.Google("Google Maps",
 			{
 		numZoomLevels: 20,
@@ -165,7 +236,7 @@ $(function(){
 
 	var thisRef = this;
 
-	var location = new OpenLayers.LonLat(44.812652967284656,41.696116260522786);
+	var location = new OpenLayers.LonLat(43.32652967284656,42.302116260522786);
 	location.transform( new OpenLayers.Projection("EPSG:4326") , new OpenLayers.Projection("EPSG:900913") );
-	MapContainer.map.setCenter( location, 14 );
+	MapContainer.map.setCenter( location, 8 );
 });

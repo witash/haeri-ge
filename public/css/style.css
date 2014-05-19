@@ -1,3 +1,122 @@
+*{
+	margin:0;
+	padding:0;
+	font-family: 'Open Sans', sans-serif;
+}
+
+body{
+	overflow:hidden;
+}
+nav{
+	position: fixed;
+	top: 65px;
+	left: 0;
+	width: 100%;
+	display: inline;
+	height: 23px;
+	border: 1px solid #999999;
+
+	background: #CCCCCC;
+	opacity:0.9;
+		background: -webkit-gradient(linear, left top, left bottom, from(#99AA99),
+		to(#CCDDCC));
+	background: -webkit-linear-gradient(top, #CCDDCC, #99AA99);
+	background: -moz-linear-gradient(top, #CCDDCC, #99AA99);
+	background: -ms-linear-gradient(top, #CCDDCC, #99AA99);
+	background: -o-linear-gradient(top, #CCDDCC, #99AA99);
+	z-index: 1100;
+	text-align:center;	
+}
+.key{
+	border:1px solid #333333;
+	width:20px;
+	height:20px;
+	display:inline-block;
+	margin:5px 5px 0px 5px;
+}
+
+.key-label{
+	text-align:right;
+}
+
+.legend{
+	font-size:10pt;
+	width:60%;
+}
+
+.tombar{
+	height:100%;
+}
+
+.tombar-label-left{
+	position:absolute;
+	top:-20px;
+	left:0;
+}
+
+.tombar-value.high{
+	background: -webkit-gradient(linear, left top, left bottom, from(#CC5555),
+		to(#FF9999));
+	background: -webkit-linear-gradient(top, #CC5555, #FF9999);
+	background: -moz-linear-gradient(top, #CC5555, #FF9999);
+	background: -ms-linear-gradient(top, #CC5555, #FF9999);
+	background: -o-linear-gradient(top, #CC5555, #FF9999);	
+}
+
+.tombar-value.low{
+	background: -webkit-gradient(linear, left top, left bottom, from(#55CC55),
+		to(#99FF99));
+	background: -webkit-linear-gradient(top, #55CC55, #99FF99);
+	background: -moz-linear-gradient(top, #55CC55, #99FF99);
+	background: -ms-linear-gradient(top, #55CC55, #99FF99);
+	background: -o-linear-gradient(top, #55CC55, #99FF99);	
+}
+
+.tombar-value.mid{
+	background: -webkit-gradient(linear, left top, left bottom, from(#CCCC55),
+		to(#FFFF99));
+	background: -webkit-linear-gradient(top, #CCCC55, #FFFF99);
+	background: -moz-linear-gradient(top, #CCCC55, #FFFF99);
+	background: -ms-linear-gradient(top, #CCCC55, #FFFF99);
+	background: -o-linear-gradient(top, #CCCC55, #FFFF99);	
+}
+
+.tombar-label-right{
+	position:absolute;
+	top:25%;
+	left:103%;
+}
+
+.tombar-value{
+	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
+	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
+	box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
+	position:absolute;
+	z-index:0;
+	top:0;
+}
+
+.tombar-label-div{
+	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
+	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
+	box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
+	border-right: solid 3px #000000;
+	opacitiy:0;
+	position:absolute;
+	top:0;
+}
+.menu{
+	border-left: 1px solid #999999;
+	border-right: 1px solid #999999;
+}
+
+.menu:hover{
+	background-color:#EEEEEE;
+}
+
+.tombar-label{
+	top:105%
+}
 .thermometer-back{
 	width:400px;
 	position:relative;
@@ -26,11 +145,42 @@
 .data-bar{
 	background-color:#999999;
 }
-#map{
+
+#header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	display: inline;
+	height: 55px;
+	padding: 5px;
+
+	background: #FFFFFF;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF),
+		to(#CCCCCC));
+	background: -webkit-linear-gradient(top, #FFFFFF, #CCCCCC);
+	background: -moz-linear-gradient(top, #FFFFFF, #CCCCCC);
+	background: -ms-linear-gradient(top, #FFFFFF, #CCCCCC);
+	background: -o-linear-gradient(top, #FFFFFF, #CCCCCC);
+	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
+	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
+	box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
+	z-index: 1100;
+	text-align:center;
+}
+.header-div{
+	display:inline-block;
+}
+
+.logo{
+	width:50%;
 	margin-left:auto;
 	margin-right:auto;
+}
+
+#map{
 	width:100%;
-    height: 450px;
+	height:100vh;
     z-index:-1;
 }
 
@@ -49,11 +199,11 @@
 	background: #FFFFFF;
 	border: 1px solid #999999;
 	background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF),
-		to(#DDDDDD));
-	background: -webkit-linear-gradient(top, #FFFFFF, #DDDDDD);
-	background: -moz-linear-gradient(top, #FFFFFF, #DDDDDD);
-	background: -ms-linear-gradient(top, #FFFFFF, #DDDDDD);
-	background: -o-linear-gradient(top, #FFFFFF, #DDDDDD);
+		to(#CCCCCC));
+	background: -webkit-linear-gradient(top, #FFFFFF, #CCCCCC);
+	background: -moz-linear-gradient(top, #FFFFFF, #CCCCCC);
+	background: -ms-linear-gradient(top, #FFFFFF, #CCCCCC);
+	background: -o-linear-gradient(top, #FFFFFF, #CCCCCC);
 	-webkit-border-radius: 12px;
 	-moz-border-radius: 12px;
 	border-radius: 12px;
@@ -75,7 +225,6 @@
     height: 20px;
     background: rgba(255,255,255,0.9);
     margin-left: 5px;
-
     display: block;
     line-height: 20px;
     text-align: center;
@@ -84,7 +233,7 @@
 }
 
 .olControlZoomIn.olButton {
-    margin-top: 5px;
+    margin-top: 75px;
     -webkit-box-shadow:  0px 0px 2px 1px rgba(00, 00, 00, 0.2);
     box-shadow:  0px 0px 2px 1px rgba(00, 00, 00, 0.2);
 }
@@ -94,6 +243,66 @@
     box-shadow:  			0px 1px 2px 1px rgba(00, 00, 00, 0.2);
 }
 
+.menu-item{
+	margin-left:auto;
+	margin-right:auto;
+	width:30vw;
+}
+
+#big-menu{
+	width:75vw;
+	text-align:justify;
+	padding:15px;
+}
+
 .hidden{
 	display:none;
+}
+
+nav ul ul {
+    display: none;
+	width:30vw;
+}
+nav ul li:hover > ul {
+    display: block;
+}
+nav ul {
+    display: inline-block;
+    list-style: none outside none;
+    position: relative;
+}
+nav ul:after {
+    clear: both;
+    content: "";
+    display: block;
+}
+nav ul li {
+    float: left;
+}
+
+nav ul li a {
+    display: block;
+    text-decoration: none;
+}
+nav ul ul {
+    background: none repeat scroll 0 0 #BBBBBB;
+    border-radius: 0;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+}
+
+nav ul ul li {
+	background: #CCCCCC;
+	border: 1px solid #999999;
+    float: none;
+    position: relative;
+}
+
+nav ul ul li a {
+	color: #000000;
+}
+
+nav ul ul li a:hover {
+    color: #FFFFFF;    
 }
