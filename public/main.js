@@ -2,11 +2,10 @@ $(function(){
 	var titleLabel = $('#egg-title-label');
 	var coLabel = $('#co-label');
 	var no2Label = $('#no2-label');
-
 	var coGrapher = $('#co-grapher');
 	var no2Grapher = $('#no2-grapher');
-
 	var hoverDiv = $('#hover-div');
+	var eggTable = $('#egg-table');
 
 	var size = new OpenLayers.Size(32,32);
 	var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
@@ -36,6 +35,18 @@ $(function(){
 				mgm3:1.0
 			}
 		}
+	};
+	
+	var coSnippet = {
+		high:'CO levels this high lead to {BAD THINGS}',
+		mid:'',
+		low:''
+	}
+	
+	var no2Snippet = {
+			high:'NO2 levels this high lead to {BAD THINGS}',
+			mid:'',
+			low:''		
 	}
 	
 	var curUnits = 'mgm3';
@@ -55,8 +66,8 @@ $(function(){
 		titleLabel.html(this.eggData.title);
 		hoverDiv.removeClass('hidden');
 		hoverDiv.css({
-			top:event.clientY+5,
-			left:event.clientX
+			top:154,//event.clientY+5,
+			left:54//event.clientX
 		});
 
 		coGrapher.tombar({
@@ -73,6 +84,8 @@ $(function(){
 				value:10.0
 			}]
 		});
+		$('#co-snippet').html(coSnippet[this.eggData.graphClassCO]);
+		
 		no2Grapher.tombar({
 			max:maxima.no2.graph.mgm3,
 			value: this.eggData.no2.mgm3,
@@ -87,6 +100,7 @@ $(function(){
 				value:0.2
 			}]
 		});
+		$('#no2-snippet').html(no2Snippet[this.eggData.graphClassNO2]);
 		
 	}
 
@@ -135,38 +149,44 @@ $(function(){
 		newMarker.events.register('mouseover', newMarker, mouseOverEvent);
 
 		newMarker.events.register('mouseout', newMarker, function(event){
-			hoverDiv.addClass('hidden');
+			//hoverDiv.addClass('hidden');
 		});
-		MapContainer.markers.addMarker(newMarker);    	
+		MapContainer.markers.addMarker(newMarker);
+		
+		addToTable(eggInfo);
 	}
 
 	function isToday(at){
 		var today = new Date();
-		return (at.getMonth() == today.getMonth() && at.getDate() >= today.getDate() - 7);
+		return (at.getMonth() == today.getMonth() && at.getDate() >= today.getDate() - 24);
 	}
 
 	function getEggInfo(rawEggData){
 		var eggInfo = {
 				title:rawEggData.title,
 				lon:rawEggData.location.lon,
-				lat:rawEggData.location.lat
+				lat:rawEggData.location.lat,
+				updated:rawEggData.updated
 			};
+		if(!isToday(new Date(rawEggData.updated))){
+			return {};
+		}
 		for(var i=0;i<rawEggData.datastreams.length;i++){
 			var datastream = rawEggData.datastreams[i]
 			var valType=datastream.id.substring(0,5);
 			var today = new Date();
 			if(valType === 'CO_00'){
-				if(!isToday(new Date(datastream.at))){
-					continue;
-				}
+//				if(!isToday(new Date(datastream.at))){
+//					continue;
+//				}
 				console.log(new Date(datastream.at));
 				eggInfo.co = {};
 				eggInfo.co.ppb = new Number(datastream.current_value);
 				eggInfo.co.mgm3 = eggInfo.co.ppb * 28.0 * (1.0/24.0) / 1000.0;
 			}else if(valType === 'NO2_0'){
-				if(!isToday(new Date(datastream.at))){
-					continue;
-				}
+//				if(!isToday(new Date(datastream.at))){
+//					continue;
+//				}
 				console.log(new Date(datastream.at));
 				eggInfo.no2 = {};
 				eggInfo.no2.ppb = new Number(datastream.current_value);
@@ -174,6 +194,17 @@ $(function(){
 			}
 		}
 		return eggInfo;
+	}
+	
+	function addToTable(eggInfo){
+		var eggRow = $('<tr></tr>');
+		eggRow.append('<td>'+eggInfo.title+'</td>');
+		eggRow.append('<td>'+eggInfo.updated+'</td>');
+		eggRow.append('<td>'+eggInfo.co.mgm3+'</td>');
+		eggRow.append('<td>'+eggInfo.co.ppb+'</td>');
+		eggRow.append('<td>'+eggInfo.no2.mgm3+'</td>');
+		eggRow.append('<td>'+eggInfo.no2.ppb+'</td>');
+		eggTable.append(eggRow);
 	}
 
 	function parseData(data){
@@ -218,7 +249,24 @@ $(function(){
 		'zoomWheelEnabled': false,
 		'handleRightClicks': true
 	});
+	
+	var states={
+			adapter:{
+				text:'Please be sure that the adapter is plugged in',
+				img:'This is an image',
+				btn1:{
+					text:'l'
+				}
+			}
+	}
 
+	function setState(newState){
+		$('#trouble-text').html(newState.text);
+		$('#troule-img').attr('src', newState.imgUrl);
+		$('#trouble-btn1').html(newState.btn1.text);
+		$('#trouble-btn2').on('click', newState.btn1.nextState);
+	}
+	
 	MapContainer.map.addControl(navigation);
 
 	var gmap = new OpenLayers.Layer.Google("Google Maps",

@@ -13,7 +13,7 @@ app.get('/eggs', function(req, res){
 	var body = '';
 	var req = https.request({
 		hostname:"api.xively.com",
-		path:"/v2/feeds.json?amp;mapped=true&tag=device:type=airqualityegg&per_page=50&lat=41.696116260522786&lon=44.812652967284656&distance=600",
+		path:"/v2/feeds.json?amp;mapped=true&tag=device:type=airqualityegg&per_page=150&lat=41.696116260522786&lon=44.812652967284656&distance=600",
 		method:'GET',
 		auth: 'witash:Fftw899h'
 	}, function(res2){
