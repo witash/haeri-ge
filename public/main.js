@@ -1,4 +1,6 @@
 $(function(){
+	var MapContainer = {};
+	
 	var titleLabel = $('#egg-title-label');
 	var coLabel = $('#co-label');
 	var no2Label = $('#no2-label');
@@ -7,9 +9,9 @@ $(function(){
 	var hoverDiv = $('#hover-div');
 	var eggTable = $('#egg-table');
 
+	var graphWidth = 315;
+	
 	var features = [];
-	var size = new OpenLayers.Size(32,32);
-	var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
 	
 	var colorMap = {
 			poor:'#EE5555',
@@ -58,39 +60,39 @@ $(function(){
 		curUnits = 'ppb';
 	});
 	
+	//take an egg object and add quality classes to it (for each of no2, co and overall)
 	function addGraphClass(eggInfo){
-		eggInfo.graphClassNO2 = 'low';
-		if(eggInfo.no2.mgm3 < maxima.no2.eu.mgm3 * .75){
-			eggInfo.graphClassNO2 = 'low';
-			eggInfo.graphColorNO2 = '#55CC55';
-		}else if(eggInfo.no2.mgm3 < maxima.no2.eu.mgm3){
-			eggInfo.graphClassNO2 = 'mid';
-			eggInfo.graphColorNO2 = '#CCCC55';
+		var goodFactor = 0.75;
+		var fairFactor = 1.0;
+		
+		if(eggInfo.no2.mgm3 < maxima.no2.eu.mgm3 * goodFactor){
+			eggInfo.graphClassNO2 = 'good';
+		}else if(eggInfo.no2.mgm3 < maxima.no2.eu.mgm3 * fairFactor){
+			eggInfo.graphClassNO2 = 'fair';
 		}else{
-			eggInfo.graphClassNO2 = 'high';
-			eggInfo.graphColorNO2 = '#CC5555';
+			eggInfo.graphClassNO2 = 'poor';
 		}
 		
-		if(eggInfo.co.mgm3 < maxima.co.eu.mgm3 * .75){
-			eggInfo.graphClassCO = 'low';
-			eggInfo.graphColorCO = '#55CC55';
-		}else if(eggInfo.co.mgm3 < maxima.co.eu.mgm3){
-			eggInfo.graphClassCO = 'mid';
-			eggInfo.graphColorCO = '#CCCC55';
+		if(eggInfo.co.mgm3 < maxima.co.eu.mgm3 * goodFactor){
+			eggInfo.graphClassCO = 'good';
+		}else if(eggInfo.co.mgm3 < maxima.co.eu.mgm3 * fairFactor){
+			eggInfo.graphClassCO = 'fair';
 		}else{
-			eggInfo.graphClassCO = 'high';
-			eggInfo.graphColorCO = '#CC5555';
+			eggInfo.graphClassCO = 'poor';
 		}
 		
-		if(eggInfo.graphClassCO === 'high' || eggInfo.graphClassNO2 === 'high'){
+		//overall class is whichever is worse, co or no2
+		if(eggInfo.graphClassCO === 'poor' || eggInfo.graphClassNO2 === 'poor'){
 			eggInfo.overallClass = 'poor';
-		}else if(eggInfo.graphClassCO === 'mid' || eggInfo.graphClassNO2 === 'mid'){
+		}else if(eggInfo.graphClassCO === 'fair' || eggInfo.graphClassNO2 === 'fair'){
 			eggInfo.overallClass = 'fair';
 		}else{
 			eggInfo.overallClass = 'good';
 		}
 	}
 
+	//add a feature representing an egg to the map
+	//the features attributes has will contain the egg data
 	function addEgg(eggInfo){
 		addGraphClass(eggInfo);
 
@@ -103,11 +105,8 @@ $(function(){
 		features.push(newMarker);
 	}
 
-	function isToday(at){
-		var today = new Date();
-		return (at.getMonth() == today.getMonth() && at.getDate() >= today.getDate() - 24);
-	}
-
+	//reformat the raw data from xively into something readable for our system
+	//this includes ppb to mg/m3 conversions and throwing out negative values
 	function getEggInfo(rawEggData){
 		var eggInfo = {
 				title:rawEggData.title,
@@ -115,13 +114,9 @@ $(function(){
 				lat:rawEggData.location.lat,
 				updated:rawEggData.updated
 			};
-//		if(!isToday(new Date(rawEggData.updated))){
-//			return {};
-//		}
 		for(var i=0;i<rawEggData.datastreams.length;i++){
 			var datastream = rawEggData.datastreams[i]
 			var valType=datastream.id.substring(0,5);
-			var today = new Date();
 			if(valType === 'CO_00'){
 				var test = new Number(datastream.current_value);
 				if(test >= 0){
@@ -172,37 +167,37 @@ $(function(){
 			}
 		}
 
-		redraw();
 		MapContainer.markers.addFeatures(features);
 		redraw();
-		
 		
 		$('#geo-key').css({'background-color':'#3476AA'});
 		$('#eu-key').css({'background-color':'#96ACEE'});
 		
-		var label1Left = (maxima.no2.geo.mgm3 / maxima.no2.graph.mgm3) * 315;
+		var label1Left = (maxima.no2.geo.mgm3 / maxima.no2.graph.mgm3) * graphWidth;
 		$('#no2-label-geo').css({
 			left:label1Left+'px',
 			'background-color':'#3476AA'
 		});
-		var label2Left = (maxima.no2.eu.mgm3 / maxima.no2.graph.mgm3) * 315;
+		var label2Left = (maxima.no2.eu.mgm3 / maxima.no2.graph.mgm3) * graphWidth;
 		$('#no2-label-eu').css({
 			left:label2Left+2+'px',
 			'background-color':'#96ACEE'
 		});
 		
-		var label1Left = (maxima.co.geo.mgm3 / maxima.co.graph.mgm3) * 315;
+		var label1Left = (maxima.co.geo.mgm3 / maxima.co.graph.mgm3) * graphWidth;
 		$('#co-label-geo').css({
 			left:label1Left+'px',
 			'background-color':'#3476AA'
 		});
-		var label2Left = (maxima.co.eu.mgm3 / maxima.co.graph.mgm3) * 315;
+		var label2Left = (maxima.co.eu.mgm3 / maxima.co.graph.mgm3) * graphWidth;
 		$('#co-label-eu').css({
 			left:label2Left+'px',
 			'background-color':'#96ACEE'
 		});
 	}
 	
+	//iterate over the egg features, and get the mean values for each cluster
+	//then addGraphClass for the cluster with the averaged data and redraw
 	function redraw(){
 		for(var i=0;i<MapContainer.markers.features.length;i++){
 			var totals = {co:{ppb:0,mgm3:0}, no2:{ppb:0,mgm3:0}};
@@ -233,14 +228,6 @@ $(function(){
 		}		
 	}
 
-	$.ajax({
-		url:"eggs",
-		success:parseData,
-		error:function(error){
-			console.log(error);
-		}
-	});
-	
 	var page = 0;
 	function nextPage(lastData){
 		if(lastData){
@@ -249,7 +236,6 @@ $(function(){
 			var totalResults = parseInt(lastData.totalResults);
 			var startIndex = parseInt(lastData.startIndex);
 			var itemsPerPage = parseInt(lastData.itemsPerPage);
-			console.log(totalResults, startIndex, itemsPerPage);
 			redraw();
 		}
 		
@@ -266,126 +252,145 @@ $(function(){
 		}
 	}
 //	nextPage();
-
-	var MapContainer = {};
 	
-	var strategy = new OpenLayers.Strategy.Cluster({
-	    distance: 20 // <-- removed clustering flag
-	});
-	
-	MapContainer.map = new OpenLayers.Map({
-		div: 'map',
-		allOverlays: true,
-		displayProjection: new OpenLayers.Projection("EPSG:900913"),
-		projection: new OpenLayers.Projection("EPSG:900913"),
-		units: "m",
-		theme: null,
-		eventListeners:{
-			zoomend:function(e){
-				redraw();
-			},
-			featureover:function(e){
-				coLabel.html(e.feature.attributes.co[curUnits].toFixed(2) + ' ' +'mg/m3');
-				no2Label.html(e.feature.attributes.no2[curUnits].toFixed(3) + ' '+'mg/m3');
+	//redraw graphs and replace labels with values from the given feature
+	function updateHoverInfo(e){
+		coLabel.html(e.feature.attributes.co[curUnits].toFixed(2) + ' ' +'mg/m3');
+		no2Label.html(e.feature.attributes.no2[curUnits].toFixed(3) + ' '+'mg/m3');
 
-				$('#egg-title-label').html(e.feature.attributes.title);
-				$('#summary').removeClass('invisible');
-				$('#hover-content-div').removeClass('invisible');
-				$('#landing-div').addClass('hidden');
-				$('#quality').html(e.feature.attributes.overallClass);
-				$('#quality').css({
-					color:colorMap[e.feature.attributes.overallClass]
-				});
+		$('#egg-title-label').html(e.feature.attributes.title);
+		$('#summary').removeClass('invisible');
+		$('#hover-content-div').removeClass('invisible');
+		$('#landing-div').addClass('hidden');
+		$('#quality').html(e.feature.attributes.overallClass);
+		$('#quality').css({
+			color:colorMap[e.feature.attributes.overallClass]
+		});
 
-				var graphWidth = (e.feature.attributes.co.mgm3 / maxima.co.graph.mgm3) * 315;
-				graphWidth = graphWidth >= 315 ? 315 : graphWidth;
-				coGrapher.css({
-					width:graphWidth+'px',
-					'background-color':e.feature.attributes.graphColorCO
-				});
-				
-				var graphWidth = (e.feature.attributes.no2.mgm3 / maxima.no2.graph.mgm3) * 315;
-				graphWidth = graphWidth >= 315 ? 315 : graphWidth;
-				no2Grapher.css({
-					width:graphWidth+'px',
-					'background-color':e.feature.attributes.graphColorNO2
-				});
-				
-				$('#co-snippet').html(coSnippet);
-				$('#no2-snippet').html(no2Snippet);
-			},
-			featureclick:function(e){
-				if(e.feature.cluster && e.feature.cluster.length > 1){
-					MapContainer.map.zoomIn();
-					MapContainer.map.setCenter(new OpenLayers.LonLat(e.feature.geometry.x, e.feature.geometry.y));
+		var drawWidth = (e.feature.attributes.co.mgm3 / maxima.co.graph.mgm3) * graphWidth;
+		drawWidth = drawWidth >= graphWidth ? graphWidth : drawWidth;
+		console.log(e.feature.attributes.graphClassCO);
+		coGrapher.css({
+			width:drawWidth+'px',
+			'background-color':colorMap[e.feature.attributes.graphClassCO]
+		});
+		
+		var drawWidth = (e.feature.attributes.no2.mgm3 / maxima.no2.graph.mgm3) * graphWidth;
+		drawWidth = drawWidth >= graphWidth ? graphWidth : drawWidth;
+		console.log(e.feature.attributes.graphClassNO2);
+		no2Grapher.css({
+			width:drawWidth+'px',
+			'background-color':colorMap[e.feature.attributes.graphClassNO2]
+		});
+		
+		$('#co-snippet').html(coSnippet);
+		$('#no2-snippet').html(no2Snippet);
+	}
+
+	function setUpMap(){
+
+		
+		var strategy = new OpenLayers.Strategy.Cluster({
+		    distance: 20 // <-- removed clustering flag
+		});
+		
+		MapContainer.map = new OpenLayers.Map({
+			div: 'map',
+			allOverlays: true,
+			displayProjection: new OpenLayers.Projection("EPSG:900913"),
+			projection: new OpenLayers.Projection("EPSG:900913"),
+			units: "m",
+			theme: null,
+			eventListeners:{
+				zoomend:function(e){
+					redraw();
+				},
+				featureover:function(e){
+					updateHoverInfo(e);
+				},
+				featureclick:function(e){
+					if(e.feature.cluster && e.feature.cluster.length > 1){
+						MapContainer.map.zoomIn();
+						MapContainer.map.setCenter(new OpenLayers.LonLat(e.feature.geometry.x, e.feature.geometry.y));
+					}
 				}
 			}
-		}
-	});
-
-	var navigation = new OpenLayers.Control.Navigation({
-		'zoomWheelEnabled': false,
-		'handleRightClicks': true
-	});
+		});
 	
-	MapContainer.map.addControl(navigation);
-
-	var gmap = new OpenLayers.Layer.Google("Google Maps",
-		{
-			numZoomLevels: 16,
-			type: google.maps.MapTypeId.TERRAIN
-		}
-	);
+		var navigation = new OpenLayers.Control.Navigation({
+			'zoomWheelEnabled': false,
+			'handleRightClicks': true
+		});
+		
+		MapContainer.map.addControl(navigation);
 	
-	MapContainer.map.addLayer( gmap);
-
-	var context = {
-			getColor: function(feature){
-				return colorMap[feature.attributes.overallClass];
-			},
-			getLabel: function(feature){
-				if(feature.cluster && feature.cluster.length > 1){
-					return feature.cluster.length;
-				}else{
-					return '';
-				}
-			},
-			getStroke: function(feature){
-				if(feature.cluster && feature.cluster.length > 1){
-					return 7;
-				}else{
-					return 0;
-				}			
+		var gmap = new OpenLayers.Layer.Google("Google Maps",
+			{
+				numZoomLevels: 16,
+				type: google.maps.MapTypeId.TERRAIN
 			}
-	};
+		);
+		
+		MapContainer.map.addLayer( gmap);
 	
-	var strategy = new OpenLayers.Strategy.Cluster({
-	    distance: 20 // <-- removed clustering flag
+		var context = {
+				getColor: function(feature){
+					return colorMap[feature.attributes.overallClass];
+				},
+				getLabel: function(feature){
+					if(feature.cluster && feature.cluster.length > 1){
+						return feature.cluster.length;
+					}else{
+						return '';
+					}
+				},
+				getStroke: function(feature){
+					if(feature.cluster && feature.cluster.length > 1){
+						return 7;
+					}else{
+						return 0;
+					}			
+				}
+		};
+		
+		var strategy = new OpenLayers.Strategy.Cluster({
+		    distance: 20 // <-- removed clustering flag
+		});
+		this.markersLayer = new OpenLayers.Layer.Vector("Clustered markers", {
+			strategies: [strategy],
+			styleMap:new OpenLayers.StyleMap(style)
+		});
+		
+		var style = new OpenLayers.Style({
+			pointRadius: 7,
+			fillColor:'${getColor}',
+			strokeColor:'${getColor}',
+			strokeWidth:'${getStroke}',
+			strokeOpacity:0.5,
+			label:'${getLabel}'
+		},{context:context}); 
+		
+		MapContainer.markers = new OpenLayers.Layer.Vector("Markers", {
+			strategies: [strategy],
+			styleMap:style
+		});
+		
+		MapContainer.map.addLayer(MapContainer.markers);
+	
+		var location = new OpenLayers.LonLat(42.80652967284656,42.302116260522786);
+		location.transform( new OpenLayers.Projection("EPSG:4326") , new OpenLayers.Projection("EPSG:900913") );
+		MapContainer.map.setCenter( location, 8 );
+	}
+	
+	//make sure that the map is initialized BEFORE getting data
+	setUpMap();
+	//get the data from the server and parse it on success.
+	//this query only gets georgian data.
+	$.ajax({
+		url:"eggs",
+		success:parseData,
+		error:function(error){
+			console.log(error);
+		}
 	});
-	this.markersLayer = new OpenLayers.Layer.Vector("Clustered markers", {
-		strategies: [strategy],
-		styleMap:new OpenLayers.StyleMap(style)
-	});
-	
-	var style = new OpenLayers.Style({
-		pointRadius: 7,
-		fillColor:'${getColor}',
-		strokeColor:'${getColor}',
-		strokeWidth:'${getStroke}',
-		strokeOpacity:0.5,
-		label:'${getLabel}'
-	},{context:context}); 
-	
-	MapContainer.markers = new OpenLayers.Layer.Vector("Markers", {
-		strategies: [strategy],
-		styleMap:style
-	});
-	
-	MapContainer.map.addLayer(MapContainer.markers);
-
-	var thisRef = this;
-
-	var location = new OpenLayers.LonLat(42.80652967284656,42.302116260522786);
-	location.transform( new OpenLayers.Projection("EPSG:4326") , new OpenLayers.Projection("EPSG:900913") );
-	MapContainer.map.setCenter( location, 8 );
 });
