@@ -7,6 +7,7 @@
 body{
 	overflow:hidden;
 }
+
 nav{
 	position: fixed;
 	top: 65px;
@@ -18,7 +19,7 @@ nav{
 
 	background: #CCCCCC;
 	opacity:0.9;
-		background: -webkit-gradient(linear, left top, left bottom, from(#99AA99),
+	background: -webkit-gradient(linear, left top, left bottom, from(#99AA99),
 		to(#CCDDCC));
 	background: -webkit-linear-gradient(top, #CCDDCC, #99AA99);
 	background: -moz-linear-gradient(top, #CCDDCC, #99AA99);
@@ -27,12 +28,35 @@ nav{
 	z-index: 1100;
 	text-align:center;	
 }
+
+.h1{
+	display:inline-block;
+	margin-left:10%;
+	float:left;
+	text-transform:uppercase;
+	font-size:20pt;
+	margin-top:12px;
+	line-height:100%;
+}
+.h2{
+	display:inline-block;
+	float:left;
+	font-size:16pt;
+	margin-left:20px;
+	margin-top:12px;
+}
+.h3{
+	font-size:16pt;
+	margin-top:12px;
+}
+.h3 a{
+	color:white;
+	text-decoration:none;
+}
 .key{
-	border:1px solid #333333;
+	border:1px solid #AAAAAA;
 	width:20px;
 	height:20px;
-	display:inline-block;
-	margin:5px 5px 0px 5px;
 }
 
 .key-label{
@@ -40,71 +64,11 @@ nav{
 }
 
 .legend{
+	margin-top:10px;
+	margin-bottom:10px;
 	font-size:10pt;
-	width:60%;
 }
 
-.tombar{
-	height:100%;
-}
-
-.tombar-label-left{
-	position:absolute;
-	top:-20px;
-	left:0;
-}
-
-.tombar-value.high{
-	background: -webkit-gradient(linear, left top, left bottom, from(#CC5555),
-		to(#FF9999));
-	background: -webkit-linear-gradient(top, #CC5555, #FF9999);
-	background: -moz-linear-gradient(top, #CC5555, #FF9999);
-	background: -ms-linear-gradient(top, #CC5555, #FF9999);
-	background: -o-linear-gradient(top, #CC5555, #FF9999);	
-}
-
-.tombar-value.low{
-	background: -webkit-gradient(linear, left top, left bottom, from(#55CC55),
-		to(#99FF99));
-	background: -webkit-linear-gradient(top, #55CC55, #99FF99);
-	background: -moz-linear-gradient(top, #55CC55, #99FF99);
-	background: -ms-linear-gradient(top, #55CC55, #99FF99);
-	background: -o-linear-gradient(top, #55CC55, #99FF99);	
-}
-
-.tombar-value.mid{
-	background: -webkit-gradient(linear, left top, left bottom, from(#CCCC55),
-		to(#FFFF99));
-	background: -webkit-linear-gradient(top, #CCCC55, #FFFF99);
-	background: -moz-linear-gradient(top, #CCCC55, #FFFF99);
-	background: -ms-linear-gradient(top, #CCCC55, #FFFF99);
-	background: -o-linear-gradient(top, #CCCC55, #FFFF99);	
-}
-
-.tombar-label-right{
-	position:absolute;
-	top:25%;
-	left:103%;
-}
-
-.tombar-value{
-	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
-	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
-	box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
-	position:absolute;
-	z-index:0;
-	top:0;
-}
-
-.tombar-label-div{
-	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
-	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
-	box-shadow: rgba(.3, .3, .3, 1) 0 5px 0;
-	border-right: solid 3px #000000;
-	opacitiy:0;
-	position:absolute;
-	top:0;
-}
 .menu{
 	border-left: 1px solid #999999;
 	border-right: 1px solid #999999;
@@ -114,27 +78,17 @@ nav{
 	background-color:#EEEEEE;
 }
 
-.tombar-label{
-	top:105%
+.grapher{
+	height:100%;
+	background-color:#23e7a9;
 }
+
 .thermometer-back{
-	width:400px;
+	background-color:#FFFFFF;
+	border:1px solid #AAAAAA;
+	height:35px;
+	width:315px;
 	position:relative;
-}
-
-.lowbar{
-	color:#349934;
-	width:234px;
-}
-
-.midbar{
-	color:#999934;
-	width:234px;
-}
-
-.highbar{
-	color:#993434;
-	width:400px;
 }
 
 .grapher{
@@ -143,7 +97,14 @@ nav{
 }
 
 .data-bar{
+	height:100%;
+	width:3px;
+	position:absolute;
 	background-color:#999999;
+}
+
+#no2-label-eu, #no2-label-geo{
+	width:2px;
 }
 
 #header {
@@ -155,13 +116,9 @@ nav{
 	height: 55px;
 	padding: 5px;
 
-	background: #FFFFFF;
-	background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF),
-		to(#CCCCCC));
-	background: -webkit-linear-gradient(top, #FFFFFF, #CCCCCC);
-	background: -moz-linear-gradient(top, #FFFFFF, #CCCCCC);
-	background: -ms-linear-gradient(top, #FFFFFF, #CCCCCC);
-	background: -o-linear-gradient(top, #FFFFFF, #CCCCCC);
+	background: #00006E;
+	color:white;
+
 	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
 	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
 	box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
@@ -185,31 +142,40 @@ nav{
 }
 
 #map-container{
-	position:relative;	
+	position:relative;
+	
 }
 
 #hover-div{
 	position:absolute;
 	z-index:1000;
-	
+	top:134px;
+	left:54px;	
 	opacity:0.9;
-	
-	padding:20px;
+	width:350px;
 	
 	background: #FFFFFF;
-	border: 1px solid #999999;
 	background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF),
 		to(#CCCCCC));
 	background: -webkit-linear-gradient(top, #FFFFFF, #CCCCCC);
 	background: -moz-linear-gradient(top, #FFFFFF, #CCCCCC);
 	background: -ms-linear-gradient(top, #FFFFFF, #CCCCCC);
 	background: -o-linear-gradient(top, #FFFFFF, #CCCCCC);
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
+
 	-webkit-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
 	-moz-box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
 	box-shadow: rgba(.3, .3, .3, 1) 0 1px 0;
+}
+
+#egg-title-div{
+	background-color:#00006E;
+	color:white;
+	padding:10px;
+}
+
+#hover-content-div{
+	padding:15px;
+	font-size:10pt;
 }
 
 .olControlAttribution{
@@ -243,66 +209,40 @@ nav{
     box-shadow:  			0px 1px 2px 1px rgba(00, 00, 00, 0.2);
 }
 
-.menu-item{
-	margin-left:auto;
-	margin-right:auto;
-	width:30vw;
-}
-
-#big-menu{
-	width:75vw;
-	text-align:justify;
-	padding:15px;
-}
-
 .hidden{
 	display:none;
 }
 
-nav ul ul {
-    display: none;
-	width:30vw;
-}
-nav ul li:hover > ul {
-    display: block;
-}
-nav ul {
-    display: inline-block;
-    list-style: none outside none;
-    position: relative;
-}
-nav ul:after {
-    clear: both;
-    content: "";
-    display: block;
-}
-nav ul li {
-    float: left;
+.toggler{
+	font-weight:bold;
 }
 
-nav ul li a {
-    display: block;
-    text-decoration: none;
-}
-nav ul ul {
-    background: none repeat scroll 0 0 #BBBBBB;
-    border-radius: 0;
-    padding: 0;
-    position: absolute;
-    top: 100%;
+#about-div{
+	width:50%;
+	margin-left:20%;
+	margin-top:200px;
 }
 
-nav ul ul li {
-	background: #CCCCCC;
-	border: 1px solid #999999;
-    float: none;
-    position: relative;
+.snippet{
+	font-size:10pt;
+	height:45px;
 }
 
-nav ul ul li a {
-	color: #000000;
+#summary{
+	text-transform:uppercase;
 }
 
-nav ul ul li a:hover {
-    color: #FFFFFF;    
+#quality{
+	font-weight:bold;
+}
+
+#landing-div{
+	font-size:14pt;
+	text-align:center;
+	padding:15px;
+	position:absolute;
+}
+
+.invisible{
+	visibility:hidden;
 }
