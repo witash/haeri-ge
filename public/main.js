@@ -1,4 +1,14 @@
 $(function(){
+
+	//safari requires this to correctly fullscreen the map.
+	//annoying, but no apparent way around.
+	$(window).resize(function(){
+		$('#map').height($(window).height());
+		$('#map').width($(window).width());
+	});
+	$('#map').height($(window).height());
+	$('#map').width($(window).width());
+
 	var MapContainer = {};
 	
 	var titleLabel = $('#egg-title-label');
@@ -46,9 +56,46 @@ $(function(){
 		}
 	};
 	
-	var coSnippet = 'Carbon monoxide prevents oxygen from being delivered to vital organs';
-
-	var no2Snippet = 'Nitrogen dioxide causes respiratory irritation and exacerbates asthma attacks';
+	var curLang = 'en';
+	
+	var translationMap={ 
+		en:{
+			'title':'Let Georgia Breathe',
+			'subtitle':'A campaign for fresh air',
+			'air-quality':'Air Quality',
+			'cosnippet':'Carbon monoxide prevents oxygen from being delivered to vital organs',
+			'no2snippet':'Nitrogen dioxide causes respiratory irritation and exacerbates asthma attacks',
+			'poor':'poor',
+			'fair':'fair',
+			'good':'good',
+			'more-info':'For more information click ',
+			'initial-text':'Hover over a marker to see air quality at that point, or zoom in for more detail.',
+			'max-text':'Max allowable concentration',
+			'max-georgia':'Georgian Natl. Legislation',
+			'max-who':'EU/WHO Recommendation',
+			'about':'About',
+			'carbon-monoxide':'Carbon monoxide',
+			'nitrogen-dioxide':'Nitrogen Dioxide'
+		},
+		ka:{
+			'title':'სუფთა ჰაერი საქართველოს',
+			'subtitle':'კამპანია სუფთა ჰაერისთვის',
+			'air-quality':'ჰაერის ხარისხი',
+			'cosnippet':'ნახშირბადის მონოქსიდი ხელს უშლის სასიცოცხლო ორგანოებისთვის ჟანგბადის მიწოდებას',
+			'no2snippet':'აზოტის დიოქსიდი იწვევს სასუნთქი გზების გაღიზიანებას და აძლიერებს ასთმის შეტევებს',
+			'poor':'ცუდი',
+			'fair':'საშუალო',
+			'good':'კარგი',
+			'more-info':'უფრო მეტი ინფორმაციისთვის ეწვიეთ განყოფილებას ',
+			'initial-text':'დეტალურად ჰაერის ხარისხის სანახავად დააჭირეთ სასურველ წერტილს.',
+			'max-text':'მაქსიმალურად დასაშვები შემცველობა',
+			'max-georgia':'საქართველოს ეროვნული კანონმდებლობა',
+			'max-who':'EU/WHO რეკომენდაცია',
+			'about':'პროექტის შესახებ',
+			'carbon-monoxide':'ნახშირბადის ოქსიდი',
+			'nitrogen-dioxide':'აზოტის დიოქსიდი'
+		}
+	}
 	
 	var curUnits = 'mgm3';
 	
@@ -62,8 +109,8 @@ $(function(){
 	
 	//take an egg object and add quality classes to it (for each of no2, co and overall)
 	function addGraphClass(eggInfo){
-		var goodFactor = 0.75;
-		var fairFactor = 1.0;
+		var goodFactor = 1.0;
+		var fairFactor = 1.25;
 		
 		if(eggInfo.no2.mgm3 < maxima.no2.eu.mgm3 * goodFactor){
 			eggInfo.graphClassNO2 = 'good';
@@ -80,7 +127,22 @@ $(function(){
 		}else{
 			eggInfo.graphClassCO = 'poor';
 		}
-		
+
+		eggInfo.overallClass = eggInfo.graphClassCO;
+		var coPercent = eggInfo.co.mgm3 / maxima.co.eu.mgm3;
+		var no2Percent = eggInfo.no2.mgm3 / maxima.no2.eu.mgm3;
+		var average = (coPercent + no2Percent) / 2;
+
+		console.log(coPercent,no2Percent,average);
+		if(average < goodFactor){
+			eggInfo.overallClass = 'good';
+		}else if(average < fairFactor){
+			eggInfo.overallClass = 'fair';
+		}else{
+			eggInfo.overallClass = 'poor';
+		}
+
+
 		//overall class is whichever is worse, co or no2
 		if(eggInfo.graphClassCO === 'poor' || eggInfo.graphClassNO2 === 'poor'){
 			eggInfo.overallClass = 'poor';
@@ -262,7 +324,8 @@ $(function(){
 		$('#summary').removeClass('invisible');
 		$('#hover-content-div').removeClass('invisible');
 		$('#landing-div').addClass('hidden');
-		$('#quality').html(e.feature.attributes.overallClass);
+		var overallClass = translationMap[curLang][e.feature.attributes.overallClass];
+		$('#quality').html(overallClass);
 		$('#quality').css({
 			color:colorMap[e.feature.attributes.overallClass]
 		});
@@ -283,8 +346,8 @@ $(function(){
 			'background-color':colorMap[e.feature.attributes.graphClassNO2]
 		});
 		
-		$('#co-snippet').html(coSnippet);
-		$('#no2-snippet').html(no2Snippet);
+		$('#co-snippet').html(translationMap[curLang].cosnippet);
+		$('#no2-snippet').html(translationMap[curLang].no2snippet);
 	}
 
 	function setUpMap(){
@@ -382,6 +445,28 @@ $(function(){
 		MapContainer.map.setCenter( location, 8 );
 	}
 	
+	function retranslate(){
+		$('[translation-key]').each(function(){
+			var key = $(this).attr('translation-key');
+			$(this).html(translationMap[curLang][key]);
+		});
+		$(".about-link").prop('href', curLang+'.about.html');
+		$('#co-snippet').html(translationMap[curLang].cosnippet);
+		$('#no2-snippet').html(translationMap[curLang].no2snippet);
+	}
+	
+	function bindTranslation(){
+		$('.translate-btn').each(function(){
+			var ref = $(this);
+			$(this).on('click', function(){
+				curLang = ref.prop('id');
+				retranslate();
+			});
+		});
+	}
+	
+	bindTranslation();
+	
 	//make sure that the map is initialized BEFORE getting data
 	setUpMap();
 	//get the data from the server and parse it on success.
@@ -393,4 +478,6 @@ $(function(){
 			console.log(error);
 		}
 	});
+	
+	retranslate();
 });

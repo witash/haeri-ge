@@ -13,20 +13,18 @@
 <body>
 
 	<div id="header">
-		<div class="h1">Let Georgia Breathe</div>
-		<div class="h2">A campaign for fresh air</div>
-		<a href="https://facebook.com/AirQualityCivilMonitoring" style="float:right; margin-right:10px;margin-top:10px;" target="_"><img src="img/facebook.png"></a>
-		<div class="h3"><a href="about.html">About</a></div>
-	</div>
-	
-	<div id="header2" class="hidden">
-		<a href="http://www.safedrive.ge" target="_"><img src="img/prs-logo.png" style="height:55px; float:left;"></a>
-		<a href="http://ecovision.ge" target="_"><img src="img/ecovision-logo.png" style="height:55px; float:left;"></a>
-		<a href="http://elva.org" target="_"><img src="img/elva-logo.png" style="height:55px; float:left;"></a>
-		<a href="https://facebook.com/AirQualityCivilMonitoring" style="float:right; margin-right:10px;margin-top:10px;" target="_"><img src="img/facebook.png"></a>
-		<h3 class="logo">ჰაერის ხარისხის სამოქალაქო მონიტორინგი</h3>
-		<h3 class="logo">Air Quality Civil Monitoring</h3>
 
+		<div class="h1" translation-key="title">Let Georgia Breathe</div>
+		<div class="h2" translation-key="subtitle">A campaign for fresh air</div>
+
+	
+	<a href="https://facebook.com/AirQualityCivilMonitoring" style="float:right; margin-right:10px;margin-top:10px;" target="_"><img src="img/facebook.png"></a>	
+		<div><a class="translate-btn" id="ka"><img src="img/ka.png"></a></div>
+		<div><a class="translate-btn" id="en"><img src="img/en.png"></a></div>
+
+		
+		
+		<div class="h3"><a href="en.about.html" translation-key="about" class="about-link">About</a></div>	
 
 	</div>
 	
@@ -37,15 +35,15 @@
 	<div id="hover-div">
 		<div id="egg-title-div" >
 			<span id="egg-title-label"></span><br/>
-			<span id="summary" class="invisible">
-			Air Quality:
+			<div id="summary" class="invisible">
+				<span translation-key="air-quality">Air Quality</span>:
 				<span id="quality"></span>
-			</span>
+			</div>
 		</div>
 		
-		<div id="landing-div">Hover over a marker to see air quality at that point, or zoom in for more detail.</div>
+		<div id="landing-div" translation-key="initial-text">Hover over a marker to see air quality at that point, or zoom in for more detail.</div>
 		<div id="hover-content-div" class="invisible">
-			Carbon monoxide (CO):<span id="co-label"></span><br/>
+			<span translation-key="carbon-monoxide">Carbon monoxide</span> (CO):<span id="co-label"></span><br/>
 	
 			<div class="thermometer-back">
 				<div class="grapher" id="co-grapher">
@@ -55,7 +53,7 @@
 			</div>
 			<div class="snippet" id="co-snippet"></div>
 			
-			Nitrogen dioxide (NO2):<span id="no2-label"></span><br/>
+			<span translation-key="nitrogen-dioxide">Nitrogen dioxide</span> (NO2):<span id="no2-label"></span><br/>
 	 
 			<div class="thermometer-back">
 				<div class="grapher" id="no2-grapher">
@@ -65,32 +63,32 @@
 			</div>
 			<div class="snippet" id="no2-snippet"></div>
 			
-			<!-- <div class="legend">
-				Max allowable concentration:<br/>
-				<div class="key-label">Georgian Natl. Legislation</div><div id="geo-key" class="key"></div><br/>
-				<div class="key-label">EU Recommendation</div><div id="eu-key" class="key"></div>
-			</div>-->
 			<table class="legend">
-				<thead><tr><th colspan="2">Max allowable concentration:</th></tr></thead>
+				<thead><tr><th colspan="2" translation-key="max-text">Max allowable concentration:</th></tr></thead>
 				<tbody>
 					<tr>
-						<td class="key-label">Georgian Natl. Legislation</td>
+						<td class="key-label" translation-key="max-georgia">Georgian Natl. Legislation</td>
 						<td id="geo-key" class="key"></td>
 					</tr>
 					<tr>
-						<td class="key-label">WHO Recommendation</td>
+						<td class="key-label" translation-key="max-who">WHO Recommendation</td>
 						<td id="eu-key" class="key"></td>
 					</tr>
 				</tbody>
 			</table>
 			
-			<span>For more information click <a href="about.html" target=_blank>About</a></span>
+			<div>
+				<span translation-key="more-info">For more information click</span>
+				<a translation-key="about" href="en.about.html" target=_blank class=".about-link">About</a>
+			</div>
 		</div>
 	</div>
 	
+
+	
 	<!-- JavaScript Includes -->
 	<script src="http://openlayers.org/api/OpenLayers.js"></script>
-	<script src="lib/jquery-1.11.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 	<script src="lib/jquery-ui-1.10.4.custom.js"></script>
 	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5Z1HBksC9aKMtS0ek6iP-q38zXW1k7CM&sensor=false&libraries=places&language=ka" type="text/javascript"></script>
 
