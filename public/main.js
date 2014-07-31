@@ -56,7 +56,7 @@ $(function(){
 		}
 	};
 	
-	var curLang = 'en';
+	var curLang = 'ka';
 	
 	var translationMap={ 
 		en:{
@@ -128,28 +128,29 @@ $(function(){
 			eggInfo.graphClassCO = 'poor';
 		}
 
-		eggInfo.overallClass = eggInfo.graphClassCO;
-		var coPercent = eggInfo.co.mgm3 / maxima.co.eu.mgm3;
-		var no2Percent = eggInfo.no2.mgm3 / maxima.no2.eu.mgm3;
-		var average = (coPercent + no2Percent) / 2;
-
-		console.log(coPercent,no2Percent,average);
-		if(average < goodFactor){
-			eggInfo.overallClass = 'good';
-		}else if(average < fairFactor){
-			eggInfo.overallClass = 'fair';
-		}else{
+		/*
+		Overall class is calculated as follows 
+		+-----+-----+-----+-----+
+		|     |poor |fair |good |
+		+-----+-----+-----+-----+
+		|poor |poor |poor |fair |
+		+-----+-----+-----+-----+
+		|fair |poor |fair |fair |
+		+-----+-----+-----+-----+
+		|good |fair |fair |good |
+		+-----+-----+-----+-----+
+		*/		
+		//poor + poor = fair and  poor + fair = poor
+		if ((eggInfo.graphClassCO === 'poor' && eggInfo.graphClassNO2 === 'poor') ||
+			(eggInfo.graphClassCO === 'poor' && eggInfo.graphClassNO2 === 'fair') ||
+			(eggInfo.graphClassCO === 'fair' && eggInfo.graphClassNO2 === 'poor')){
 			eggInfo.overallClass = 'poor';
-		}
-
-
-		//overall class is whichever is worse, co or no2
-		if(eggInfo.graphClassCO === 'poor' || eggInfo.graphClassNO2 === 'poor'){
-			eggInfo.overallClass = 'poor';
-		}else if(eggInfo.graphClassCO === 'fair' || eggInfo.graphClassNO2 === 'fair'){
-			eggInfo.overallClass = 'fair';
-		}else{
+		//The only way it can be green is if both are green
+		}else if(eggInfo.graphClassCO === 'good' && eggInfo.graphClassNO2 === 'good'){
 			eggInfo.overallClass = 'good';
+		//Anything not caught above is fair
+		}else{
+			eggInfo.overallClass = 'fair';
 		}
 	}
 
@@ -332,7 +333,7 @@ $(function(){
 
 		var drawWidth = (e.feature.attributes.co.mgm3 / maxima.co.graph.mgm3) * graphWidth;
 		drawWidth = drawWidth >= graphWidth ? graphWidth : drawWidth;
-		console.log(e.feature.attributes.graphClassCO);
+
 		coGrapher.css({
 			width:drawWidth+'px',
 			'background-color':colorMap[e.feature.attributes.graphClassCO]
@@ -340,7 +341,7 @@ $(function(){
 		
 		var drawWidth = (e.feature.attributes.no2.mgm3 / maxima.no2.graph.mgm3) * graphWidth;
 		drawWidth = drawWidth >= graphWidth ? graphWidth : drawWidth;
-		console.log(e.feature.attributes.graphClassNO2);
+
 		no2Grapher.css({
 			width:drawWidth+'px',
 			'background-color':colorMap[e.feature.attributes.graphClassNO2]
