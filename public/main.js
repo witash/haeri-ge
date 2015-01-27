@@ -233,29 +233,30 @@ $(function(){
 		MapContainer.markers.addFeatures(features);
 		redraw();
 		
-		$('#geo-key').css({'background-color':'#3476AA'});
-		$('#eu-key').css({'background-color':'#96ACEE'});
+		// $('#geo-key').css({'background-color':'#3476AA'});
+		// $('#geo-key').css({'background-color':'#2fdfff'});
+		// $('#eu-key').css({'background-color':'#96ACEE'});
 		
 		var label1Left = (maxima.no2.geo.mgm3 / maxima.no2.graph.mgm3) * graphWidth;
 		$('#no2-label-geo').css({
-			left:label1Left+'px',
-			'background-color':'#3476AA'
+			left:label1Left+'px'
+			// 'background-color':'#3476AA'
 		});
 		var label2Left = (maxima.no2.eu.mgm3 / maxima.no2.graph.mgm3) * graphWidth;
 		$('#no2-label-eu').css({
-			left:label2Left+2+'px',
-			'background-color':'#96ACEE'
+			left:label2Left+2+'px'
+			// 'background-color':'#96ACEE'
 		});
 		
 		var label1Left = (maxima.co.geo.mgm3 / maxima.co.graph.mgm3) * graphWidth;
 		$('#co-label-geo').css({
-			left:label1Left+'px',
-			'background-color':'#3476AA'
+			left:label1Left+'px'
+			// 'background-color':'#3476AA'
 		});
 		var label2Left = (maxima.co.eu.mgm3 / maxima.co.graph.mgm3) * graphWidth;
 		$('#co-label-eu').css({
-			left:label2Left+'px',
-			'background-color':'#96ACEE'
+			left:label2Left+'px'
+			// 'background-color':'#96ACEE'
 		});
 	}
 	
@@ -327,25 +328,30 @@ $(function(){
 		$('#landing-div').addClass('hidden');
 		var overallClass = translationMap[curLang][e.feature.attributes.overallClass];
 		$('#quality').html(overallClass);
-		$('#quality').css({
-			color:colorMap[e.feature.attributes.overallClass]
-		});
+		// $('#quality').css({
+		// 	color:colorMap[e.feature.attributes.overallClass]
+		// });
+		$('.infodesk').removeClass('good fair poor').addClass(e.feature.attributes.overallClass);
 
 		var drawWidth = (e.feature.attributes.co.mgm3 / maxima.co.graph.mgm3) * graphWidth;
 		drawWidth = drawWidth >= graphWidth ? graphWidth : drawWidth;
 
-		coGrapher.css({
-			width:drawWidth+'px',
-			'background-color':colorMap[e.feature.attributes.graphClassCO]
-		});
+		// coGrapher.css({
+		// 	width:drawWidth+'px',
+		// 	'background-color':colorMap[e.feature.attributes.graphClassCO]
+		// });
+		coGrapher.css({ width: drawWidth + 'px' });
+		coGrapher.removeClass('bg-good bg-fair bg-poor').addClass('bg-' + e.feature.attributes.graphClassCO);
 		
 		var drawWidth = (e.feature.attributes.no2.mgm3 / maxima.no2.graph.mgm3) * graphWidth;
 		drawWidth = drawWidth >= graphWidth ? graphWidth : drawWidth;
 
-		no2Grapher.css({
-			width:drawWidth+'px',
-			'background-color':colorMap[e.feature.attributes.graphClassNO2]
-		});
+		// no2Grapher.css({
+			// width:drawWidth+'px',
+			// 'background-color':colorMap[e.feature.attributes.graphClassNO2]
+		// });
+		no2Grapher.css({ width: drawWidth + 'px' });
+		no2Grapher.removeClass('bg-good bg-fair bg-poor').addClass('bg-' + e.feature.attributes.graphClassNO2);
 		
 		$('#co-snippet').html(translationMap[curLang].cosnippet);
 		$('#no2-snippet').html(translationMap[curLang].no2snippet);
@@ -462,6 +468,9 @@ $(function(){
 			$(this).on('click', function(){
 				curLang = ref.prop('id');
 				retranslate();
+				$('body').removeClass('ka en').addClass(curLang);
+				$('.translate-btn').removeClass('l-active');
+				ref.addClass('l-active');
 			});
 		});
 	}

@@ -2,38 +2,31 @@
 <html>
 
 <head>
-	<link href="css/about.css" rel="stylesheet" />
-	<link href="css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300&subset=cyrillic-ext,latin' rel='stylesheet' type='text/css'>
-		
-	<meta charset="utf-8" />
 	<title>Let Georgia Breathe</title>
-	<style>
-	</style>
+	<meta charset="utf-8" />
+	<link href="css/style.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="ka about-page">
 
-	<div id="header">
-		<div class="h1"><a href="/">სუფთა ჰაერი საქართველოს</a></div>
-		<div class="h2">კამპანია სუფთა ჰაერისთვის</div>
-		<div><a href="ka.about.html" style="float:right; margin-right:10px;margin-top:10px;"><img src="img/ka.png"></a></div>
-		<div><a href="en.about.html" style="float:right; margin-right:10px;margin-top:10px;"><img src="img/en.png"></a></div>
-		<div class="h3"><a href="index.html">რუქა</a></div>
-	</div>
+	<div id="header" class="header">
+        <a class="logo" href="/">
+            <img src="/img/air-logo.png" alt="Logo" />
+            <span class="l-title" translation-key="title">Let Georgia Breathe</span>
+            <span class="l-subtitle" translation-key="subtitle">A campaign for fresh air</span>
+        </a>
+        <div class="l-switcher">
+            <a id="ka" href="ka.about.html" class="translate-btn l-active">ქარ</a>
+            <a id="en" href="en.about.html" class="translate-btn">eng</a>
+        </div>
+    </div>
+
+    <div class="h-links">
+        <a class="about-us-link" href="en.about.html" translation-key="about">პროექტის შესახებ</a>
+        <a class="facebook-link" href="https://facebook.com/AirQualityCivilMonitoring" target="_blank">Follow us on Facebook</a>
+    </div>
 	
-	<div id="header2" class="hidden">
-		<a href="http://www.safedrive.ge" target="_"><img src="img/prs-logo.png" style="height:55px; float:left;"></a>
-		<a href="http://ecovision.ge" target="_"><img src="img/ecovision-logo.png" style="height:55px; float:left;"></a>
-		<a href="http://elva.org" target="_"><img src="img/elva-logo.png" style="height:55px; float:left;"></a>
-		<a href="https://facebook.com/AirQualityCivilMonitoring" style="float:right; margin-right:10px;margin-top:10px;" target="_"><img src="img/facebook.png"></a>
-		<h3 class="logo">ჰაერის ხარისხის სამოქალაქო მონიტორინგი</h3>
-		<h3 class="logo">Air Quality Civil Monitoring</h3>
-
-
-	</div>
-	
-	<div id="about-div">
+	<div id="about-div" class="t-content">
 		<p class="top">
 		ჰაერის დაბინძურება საქართველოში ერთ-ერთი უმნიშვნელოვანესი პრობლემაა საზოგადოების ჯანმრთელობისთვის.  ჰაერის დაბინძურება საქართველოს მოქალაქეების სიცოცხლეს 12 თვეზე მეტი დროით ამცირებს და იწვევს ყოველწლიურად  40,000-ზე მეტი ადამიანის სიკვდილს   ყოფილ საბჭოთა კავშირის სივრცეში. მიუხედევად ბევრი საბედისწერო შემთხვევისა, კვლევებმა აჩვენა, რომ თბილისში ჰაერის დაბინძურება არის სისხლძარღვებისა და ქრონიკული დაავადებების ერთ-ერთი უმთავრესი მიზეზი, მაგალითად, როგორიცაა ასთმა, დერმატიტი და სხვა;  განსაკუთრებულ რისკ ჯგუფს წარმოადგენენ 12-19 წლის მოზარდები.
 		პროექტი „სუფთა ჰაერი საქართველოს“  მიზანია საზოგადოების მობილიზება ამ პრობლემის ირგვლივ.   ჰაერის ხარისხის საზომი 40 სენსორის გამოყენებით, სკოლის მოსწავლეები აგროვებენ  და ავრცელებენ ინფორმაციას საქართველოში ჰაერის დაბინძურების შესახებ, რათა საზოგადოებამ მოახდინოს რეაგირება ჯანმრთელობის ამ მნიშვნელოვან  საფრთხეზე.
@@ -41,9 +34,7 @@
 		
 		<div class="toggler" id='health'>ჯანმრთელობის რისკი</div>
 		<div class="togglee" id='health-content'>
-			<p>პროექტის „სუფთა ჰაერი საქართველოსთვის“ ფარგლებში ხდება ადამიანების ჯანმრთელობისთვის მავნე   ჰაერის დამაბინძურებელი ორი ნივთიერების მონიტორინგი: აზოტის დიოქსიდი (NO2)  და ნახშირბადის ოქსიდი (CO).
-
-ეს ნივთიერებები თქვენს ორგანიზმში იწვევს შემდეგ პროცესებს:</p>
+			<p>პროექტის „სუფთა ჰაერი საქართველოსთვის“ ფარგლებში ხდება ადამიანების ჯანმრთელობისთვის მავნე   ჰაერის დამაბინძურებელი ორი ნივთიერების მონიტორინგი: აზოტის დიოქსიდი (NO2)  და ნახშირბადის ოქსიდი (CO). ეს ნივთიერებები თქვენს ორგანიზმში იწვევს შემდეგ პროცესებს:</p>
 			<span class="subheading">აზოტის დიოქსიდი</span>
 			<p>აზოტის დიოქსიდის (NO2)    მაღალი შემცველობის ჰაერის სუნთქვისას იზრდება სასუნთქი გზების დაავადების შესაძლებლობა. აზოტის დიოქსიდი აზიანებს ფილტვების  გარსს და ამცირებს ორგანიზმის უნარს წინააღმდეგობა გაუწიოს სასუნთქი გზების ინფექციებს, რამაც შესაძლოა გამოიწვიო სხვადასხვა პრობლემა, როგორიცაა სუნთქვის გაძნელება, ხველა, გაციება, გრიპი და ბრონქიტი. ამ ნივთიერებით დაბინძურებული ჰაერის ხშირად სუნთქვამ შესაძლოა გამოიწვიოს მწვავე რესპირატორული დააავადებები ბავშვებში. უფრო მეტიც, NO2 მნიშვნელოვნად მოქმედებს ასთმიან ადამიანებზე, იწვევს უფრო ხშირ და უფრო მძიმე შეტევებს.  სამანქანო გზების სიახლოვეს NO2-ის შემცველობა ჰაერში  30-დან  100 %-მდე დასაშვებზე მეტია. ჰაერში NO2-ის მაღალი კონცენტრაცია განსაკუთრებით უარყოფითად მოქმედებს სუსტი ჯანმრთელობის მქონე ადამიანებზე, ასთმიანებზე, ბავშვებსა და მოხუცებზე.</p> 
 			<span class="subheading">ნახშირბადის ოქსიდი</span>
@@ -72,19 +63,17 @@
 		<div  class="toggler" id='standards'>სტანდარტები და რეიტინგები</div>
 		<div class="togglee" id="standards-content">
 			<p>
-			სტანდარტები ნაჩვენებია რუქაზე და შეგიძლიათ იხილოთ
-			<a href="http://moe.gov.ge/files/Saministros%20Prioritetebi/eng_erovnuli_mokhseneba_2009.pdf#page=25" target=_blank> ამ დოკუმენტში</a>.
-			</p>
-
-			<p>
-			ყველაზე დიდხნიანი ხელმისაწვდომი კონცენტრაცია საშუალო პერიოდში გამოყენებულია წარწერებისთვის (legend). თუმცა სენსორები გადმოსცემენ  უახლოეს მონაცემებს.
+				სტანდარტები ნაჩვენებია რუქაზე და შეგიძლიათ იხილოთ
+				<a href="http://moe.gov.ge/files/Saministros%20Prioritetebi/eng_erovnuli_mokhseneba_2009.pdf#page=25" target=_blank> ამ დოკუმენტში</a>.
 			</p>
 			<p>
-გაზომვის სისტემა: „ცუდი“ - ფასდება თუ დაბინძურება აღემატება  WHO (მსოფლიო ჯანდაცვის ორგანიზაციის) რეკომენდაციებს;  „საშუალო“ - თუ  დაბინძურება 75 %-ით აღემატება WHO (მსოფლიო ჯანდაცვის ორგანიზაციის) რეკომენდაციებს; „კარგი“ თუ დაბინძურება არ აღემატება მსოფლიო ჯანდაცვის ორგანიზაციის რეკომენდაციებს.
-დაბინძურების საერთო რეიტინგი  იზომება ყველაზე ცუდი  შედეგის ასახვით, იქნება ეს CO-ის თუ  NO2-ის დაბინძურება.
+				ყველაზე დიდხნიანი ხელმისაწვდომი კონცენტრაცია საშუალო პერიოდში გამოყენებულია წარწერებისთვის (legend). თუმცა სენსორები გადმოსცემენ  უახლოეს მონაცემებს.
 			</p>
 			<p>
-			სენსორად გამოიყენება <a href="http://airqualityegg.com">ჰაერის გამზომი სენსორი</a> განსხვავებით აქამდე არსებული სენსორებისგან, მისი დამატებითი ღირებულება ის არის, რომ ნებიემისერ მოქალაქეს შეუძლია მათი გამოიყენება. მათი ჯგუფურად გამოყენება კარგ შედეგებს იძლევა, თუმცა ინდივიდუალურად დამონტაჟებულმა სენსორებმაც შესაძლოა მოგვაწოდოს ინფრომაცია საფრთხის შესახებ. 
+				გაზომვის სისტემა: „ცუდი“ - ფასდება თუ დაბინძურება აღემატება  WHO (მსოფლიო ჯანდაცვის ორგანიზაციის) რეკომენდაციებს;  „საშუალო“ - თუ  დაბინძურება 75 %-ით აღემატება WHO (მსოფლიო ჯანდაცვის ორგანიზაციის) რეკომენდაციებს; „კარგი“ თუ დაბინძურება არ აღემატება მსოფლიო ჯანდაცვის ორგანიზაციის რეკომენდაციებს. დაბინძურების საერთო რეიტინგი  იზომება ყველაზე ცუდი  შედეგის ასახვით, იქნება ეს CO-ის თუ  NO2-ის დაბინძურება.
+			</p>
+			<p>
+				სენსორად გამოიყენება <a href="http://airqualityegg.com">ჰაერის გამზომი სენსორი</a> განსხვავებით აქამდე არსებული სენსორებისგან, მისი დამატებითი ღირებულება ის არის, რომ ნებიემისერ მოქალაქეს შეუძლია მათი გამოიყენება. მათი ჯგუფურად გამოყენება კარგ შედეგებს იძლევა, თუმცა ინდივიდუალურად დამონტაჟებულმა სენსორებმაც შესაძლოა მოგვაწოდოს ინფრომაცია საფრთხის შესახებ. 
 			</p>
 		</div>
 		
@@ -97,16 +86,12 @@
 	</div>
 	
 	<footer>
-		<a href="http://www.safedrive.ge" target="_"><img src="img/prs-logo.png" class="logo-img"></a>
-		<a href="http://ecovision.ge" target="_"><img src="img/ecovision-logo.png" class="logo-img"></a>
-		<a href="http://elva.org" target="_"><img src="img/elva-logo.png" class="logo-img"></a>
-		<a href="https://facebook.com/AirQualityCivilMonitoring" style="float:right; margin-right:10px;margin-top:10px;" target="_"><img src="img/facebook.png"></a>		
+		<a href="http://www.safedrive.ge" target="_blank"><img src="img/logo-prs.png"></a>
+		<a href="http://ecovision.ge" target="_blank"><img src="img/logo-ecovision.png"></a>
+		<a href="http://elva.org" target="_blank"><img src="img/logo-elva.png"></a>
+		<br />
+		<a href="http://www.ewmi.org/Georgia" target="_blank"><img src="img/logo-EWMI.png"></a>
 	</footer>
-	<!-- JavaScript Includes -->
-	<script src="lib/jquery-1.11.0.js"></script>
-	<script src="lib/jquery-ui-1.10.4.custom.min.js"></script>
-	
-	<script src="about.js"></script>
+
 </body>
 </html>
-
