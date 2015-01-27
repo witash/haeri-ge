@@ -2,97 +2,103 @@
 <html>
 
 <head>
-	<link href="css/style.css" rel="stylesheet" />
-	<link href="css/jquery-ui-1.10.4.custom.css" rel="stylesheet" />
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300&subset=cyrillic-ext,latin' rel='stylesheet' type='text/css'>
-		
-	<meta charset="utf-8" />
-	<title>Let Georgia Breathe</title>
+    <title>Let Georgia Breathe</title>
+    <meta charset="utf-8" />
+    <link href="css/jquery-ui-1.10.4.custom.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="ka">
 
-	<div id="header">
+    <div id="header" class="header">
+        <a class="logo" href="/">
+            <img src="/img/air-logo.png" alt="Logo" />
+            <span class="l-title" translation-key="title">Let Georgia Breathe</span>
+            <span class="l-subtitle" translation-key="subtitle">A campaign for fresh air</span>
+        </a>
+        <div class="l-switcher">
+            <a id="ka" class="translate-btn l-active">ქარ</a>
+            <a id="en" class="translate-btn">eng</a>
+        </div>
+    </div>
 
-		<div class="h1" translation-key="title">Let Georgia Breathe</div>
-		<div class="h2" translation-key="subtitle">A campaign for fresh air</div>
+    <div class="h-links">
+        <a class="about-us-link" href="ka.about.html" translation-key="about">About the Project</a>
+        <a class="facebook-link" href="https://facebook.com/AirQualityCivilMonitoring" target="_blank">Follow us on Facebook</a>
+    </div>
+    
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+    
+    <div id="hover-div" class="infodesk">
+        
+        <div id="egg-title-div" class="d-header">
+            <span id="egg-title-label" class="d-title"></span>
+            <div id="summary" class="invisible">
+                <span translation-key="air-quality">Air Quality</span>
+                <span id="quality"></span>
+            </div>
+        </div>
+        
+        <div id="landing-div" class="d-content" translation-key="initial-text">
+            Hover over a marker to see air quality at that point, or zoom in for more detail.
+        </div>
 
-	
-	<a href="https://facebook.com/AirQualityCivilMonitoring" style="float:right; margin-right:10px;margin-top:10px;" target="_"><img src="img/facebook.png"></a>	
-		<div><a class="translate-btn" id="ka"><img src="img/ka.png"></a></div>
-		<div><a class="translate-btn" id="en"><img src="img/en.png"></a></div>
+        <div id="hover-content-div" class="invisible d-content">
+            
+            <h4>
+                <span translation-key="carbon-monoxide">Carbon monoxide</span> (CO):
+                <span id="co-label"></span>
+            </h4>
+            <div class="thermometer-back">
+                <div id="co-grapher" class="grapher">
+                    <div id="co-label-geo" class="data-bar"></div>
+                    <div id="co-label-eu" class="data-bar"></div>
+                </div>
+            </div>
+            <div id="co-snippet" class="snippet"></div>
+            
+            <h4>
+                <span translation-key="nitrogen-dioxide">Nitrogen dioxide</span> (NO2):
+                <span id="no2-label"></span>
+            </h4>
+            <div class="thermometer-back">
+                <div id="no2-grapher" class="grapher">
+                    <div id="no2-label-geo" class="data-bar"></div>
+                    <div id="no2-label-eu" class="data-bar"></div>
+                </div>
+            </div>
+            <div id="no2-snippet" class="snippet"></div>
+            
+            <table class="legend">
+                <thead><tr><th colspan="2" translation-key="max-text">Max allowable concentration:</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td id="geo-key" class="key"></td>
+                        <td class="key-label" translation-key="max-georgia">Georgian Natl. Legislation</td>
+                    </tr>
+                    <tr>
+                        <td id="eu-key" class="key"></td>
+                        <td class="key-label" translation-key="max-who">WHO Recommendation</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div>
+                <span translation-key="more-info">For more information click</span>
+                <a translation-key="about" href="en.about.html" target=_blank class=".about-link">About</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript Includes -->
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="lib/jquery-ui-1.10.4.custom.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5Z1HBksC9aKMtS0ek6iP-q38zXW1k7CM&sensor=false&libraries=places&language=ka" type="text/javascript"></script>
 
-		
-		
-		<div class="h3"><a href="en.about.html" translation-key="about" class="about-link">About</a></div>	
-
-	</div>
-	
-	<div id="map-container">
-		<div id="map"></div>
-	</div>
-	
-	<div id="hover-div">
-		<div id="egg-title-div" >
-			<span id="egg-title-label"></span><br/>
-			<div id="summary" class="invisible">
-				<span translation-key="air-quality">Air Quality</span>:
-				<span id="quality"></span>
-			</div>
-		</div>
-		
-		<div id="landing-div" translation-key="initial-text">Hover over a marker to see air quality at that point, or zoom in for more detail.</div>
-		<div id="hover-content-div" class="invisible">
-			<span translation-key="carbon-monoxide">Carbon monoxide</span> (CO):<span id="co-label"></span><br/>
-	
-			<div class="thermometer-back">
-				<div class="grapher" id="co-grapher">
-					<div class="data-bar" id=co-label-geo></div>
-					<div class="data-bar" id=co-label-eu></div>
-				</div>
-			</div>
-			<div class="snippet" id="co-snippet"></div>
-			
-			<span translation-key="nitrogen-dioxide">Nitrogen dioxide</span> (NO2):<span id="no2-label"></span><br/>
-	 
-			<div class="thermometer-back">
-				<div class="grapher" id="no2-grapher">
-					<div class="data-bar" id=no2-label-geo></div>
-					<div class="data-bar" id=no2-label-eu></div>
-				</div>
-			</div>
-			<div class="snippet" id="no2-snippet"></div>
-			
-			<table class="legend">
-				<thead><tr><th colspan="2" translation-key="max-text">Max allowable concentration:</th></tr></thead>
-				<tbody>
-					<tr>
-						<td class="key-label" translation-key="max-georgia">Georgian Natl. Legislation</td>
-						<td id="geo-key" class="key"></td>
-					</tr>
-					<tr>
-						<td class="key-label" translation-key="max-who">WHO Recommendation</td>
-						<td id="eu-key" class="key"></td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<div>
-				<span translation-key="more-info">For more information click</span>
-				<a translation-key="about" href="en.about.html" target=_blank class=".about-link">About</a>
-			</div>
-		</div>
-	</div>
-	
-
-	
-	<!-- JavaScript Includes -->
-	<script src="http://openlayers.org/api/OpenLayers.js"></script>
-	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-	<script src="lib/jquery-ui-1.10.4.custom.js"></script>
-	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5Z1HBksC9aKMtS0ek6iP-q38zXW1k7CM&sensor=false&libraries=places&language=ka" type="text/javascript"></script>
-
-	<script src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
 
