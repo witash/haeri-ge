@@ -394,12 +394,9 @@ $(function(){
 		
 		MapContainer.map.addControl(navigation);
 	
-		var gmap = new OpenLayers.Layer.Google("Google Maps",
-			{
-				numZoomLevels: 16,
-				type: google.maps.MapTypeId.TERRAIN
-			}
-		);
+		var gmap = new OpenLayers.Layer.XYZ("My Map Layer",
+			['https://a.tiles.mapbox.com/v4/elvateam.l28oefj4/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoiZWx2YXRlYW0iLCJhIjoiSldSVHU0byJ9.Rj7KJY7VVQ1GeGNzKhYm4g'],{
+		},{attribution:'Imagery © <a href="http://mapbox.com">Mapbox</a>'});
 		
 		MapContainer.map.addLayer( gmap);
 	
